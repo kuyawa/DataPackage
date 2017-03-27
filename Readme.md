@@ -62,5 +62,27 @@ pack.save() // Saves the json pack only, to save the data use export
 pack.export(zip: true)
 ```
 
+### How to add this library to your project
+
+In order to use this library all you need to do is add it to your Package Manifest and it will be ready to use in your application:
+
+```
+import PackageDescription
+
+let package = Package(
+    name: "DataPackageApp",
+    dependencies: [
+        .Package(url: "https://github.com/kuyawa/DataPackage", majorVersion: 1, minor: 0)
+    ]
+)
+```
+
+**Warning**: Linux compatibility has not been tested yet.
+
+### Final notes:
+
 This is an ongoing project and will be updated regularly.
 
+DataPackage specifications can be found here: [DataPackage specs](https://specs.frictionlessdata.io/data-package/)
+
+For guides and tutorials: [DataPackage guides](http://frictionlessdata.io/guides/)
