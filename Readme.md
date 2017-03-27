@@ -62,9 +62,9 @@ pack.save() // Saves the json pack only, to save the data use export
 pack.export(zip: true)
 ```
 
-### How to add this library to your project
+### How to add this library to your project:
 
-In order to use this library all you need to do is add it to your Package Manifest and it will be ready to use in your application:
+In order to use this library all you need to do is add this repo to your Package Manifest and it will be ready to use in your application:
 
 ```Swift
 import PackageDescription
