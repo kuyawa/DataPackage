@@ -1,7 +1,10 @@
 TODO:
 
-- Package Manifest
-- Linux compatibility
+? Constraints as enum
 - Optionals
-- Parser iterator
-- Constraints as enum
+- Linux compatibility
+
+DONE:
+
+x Parser iterator
+x Package Manifest

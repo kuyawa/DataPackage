@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D0DF67A1E8AFA1D009DE791 /* ToDo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3D0DF6791E8AFA1D009DE791 /* ToDo.txt */; };
 		3D2F4EB11E84A8C00075A2B9 /* Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2F4EB01E84A8BF0075A2B9 /* Elements.swift */; };
 		3D9D63D91E81C6F4000B8CD2 /* DataPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D9D63D71E81C6F3000B8CD2 /* DataPackage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3D9D63E01E81C767000B8CD2 /* DataPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D63DF1E81C767000B8CD2 /* DataPackage.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D0DF6791E8AFA1D009DE791 /* ToDo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ToDo.txt; sourceTree = "<group>"; };
 		3D2F4EB01E84A8BF0075A2B9 /* Elements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Elements.swift; sourceTree = "<group>"; };
 		3D9D63D41E81C6F3000B8CD2 /* DataPackage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataPackage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9D63D71E81C6F3000B8CD2 /* DataPackage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPackage.h; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				3DB746A21E88411E00A1ABE8 /* Readme.md */,
+				3D0DF6791E8AFA1D009DE791 /* ToDo.txt */,
 				3D9D63D61E81C6F3000B8CD2 /* DataPackage */,
 				3D9D63D51E81C6F3000B8CD2 /* Products */,
 			);
@@ -155,6 +158,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D0DF67A1E8AFA1D009DE791 /* ToDo.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,54 +9,123 @@
 import Foundation
 
 // Convenience class, assumes defaults
-//
-// let data = CSV.load("data/gdp.csv")
-// let ok   = CSV.save(data, path: "data/gdp2.csv")
-//
 public class CSV {
     public static var parser = CsvParser()
     
+    // let data = CSV.load("data/gdp.csv")
     public static func load(_ path: String) -> Dataset {
-        return CSV.parser.load(path: path)
+        return parser.load(path: path)
     }
     
+    // let data = CSV.load(url: URL(string: "data/gdp.csv"))
     public static func load(url: URL) -> Dataset {
-        return CSV.parser.load(path: url.path)
+        return parser.load(path: url.path)
     }
 
+    // let ok = CSV.save(data, path: "data/gdp.csv")
     @discardableResult
     public static func save(_ data: Dataset, path: String) -> Bool {
-        return CSV.parser.save(data, path: path)
+        return parser.save(data, path: path)
     }
-    
 
+    // let reader = CSV.reader(path: "data/gdp.csv")
+    // for line in reader {
+    //     print(line)
+    // }
+    public static func reader(path: String) -> CsvParser {
+        parser.open(path: path)
+        return parser
+    }
 }
 
 
-// Parser class, options can be changed
+// Parser class, default options can be changed
 //
 // Use:
 //    let parser = CsvParser()
 //    parser.cellSeparator = "|"
 //    let data = parser.load(file: "data/gdp.csv")
 //
-public class CsvParser {
+public class CsvParser: Sequence {
     var lineEnd       : Character = "\n"
     var cellSeparator : Character = ","
     var textEncloser  : Character = "\""
     var escapeChar    : Character = "\\"
     var replaceChar   : [Character: Character] = ["\\":"\\", "\"":"\"", "n":"\n", "t":"\t", ",":","]
     
+    public init() {}
+    
+    //---- Iterator
+    //
+    // let parser = CsvParser()
+    // parser.open(path: "myfile.csv")
+    // for line in parser {
+    //     print(line)
+    // }
+    //
+    var file: UnsafeMutablePointer<FILE>!
+
+    // Used to open a file and read line by line with an iterator
+    @discardableResult
+    public func open(path: String) -> Bool {
+        file = fopen(path, "r")
+        if file == nil { return false }
+        return true
+    }
+    
+    public func close() {
+        fclose(file)
+    }
+    
+    deinit {
+        close()
+    }
+    
+    // Read line from file, used in iterator
+    public var nextLine: [Any]? {
+        var line: UnsafeMutablePointer<CChar>? = nil
+        var linecap: Int = 0
+        defer { free(line) }
+        let text: String? = getline(&line, &linecap, file) > 0 ? String(cString: line!) : nil
+        if text == nil { return nil }
+        let data = parseLine(text!)
+        return data
+    }
+
+    // Parse line of text into fields
+    public func parseLine(_ text: String) -> [Any] {
+        //guard let text = text else { return nil }
+        let row = parse(text: text)
+        if let line = row.first { return line }
+        return []
+    }
+  
+    // Sequence protocol: iterator
+    public func  makeIterator() -> AnyIterator<[Any]> {
+        return AnyIterator<[Any]> {
+            return self.nextLine
+        }
+    }
+
+    //---- Parser
+    //
+    // Reads the whole file at once
+    // Useful for small files of less than one GB
+    //
+    // let parser = CsvParser()
+    // let data = parser.load("/Documents/data/gdp.csv")
+
+    // Used for loading the whole file in memory at once
     public func load(path: String) -> [[Any]] {
         let text = (try? String.init(contentsOfFile: path)) ?? ""
         let data = self.parse(text: text)
         return data
     }
     
-    public func parse(text: String) -> [[Any]] {
+    public func parse(text: String) -> Dataset {
         guard !text.isEmpty else { return [[""]] }
         
-        var rows   = [[Any]]()
+        var rows   = Dataset()
         var row    = [Any]()
         var isText = false
         var index  = text.startIndex
@@ -132,6 +201,7 @@ public class CsvParser {
         return ok
     }
 }
+
 
 
 // End
