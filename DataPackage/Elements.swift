@@ -10,9 +10,9 @@ import Foundation
 
 public class Contributor {
     public var name  = ""    // Required
-    public var email = ""
-    public var uri   = ""
-    public var role  = ""
+    public var email : String?
+    public var uri   : String?
+    public var role  : String?
     
     public var say: String { return name } // for printing
 
@@ -30,8 +30,8 @@ public class Contributor {
 
 public class License {
     public var name  = ""    // Required
-    public var title = ""
-    public var uri   = ""
+    public var title : String?
+    public var uri   : String?
     
     public var say: String { return name } // for printing
 
@@ -47,11 +47,11 @@ public class License {
 }
 
 public class Source {
-    public var name  = ""
+    public var name  : String?
     public var uri   = ""     // Required
-    public var email = ""
+    public var email : String?
     
-    public var say: String { return name } // for printing
+    public var say: String { return name ?? "Unknown" } // for printing
 
     public func toDixy() -> Datamap {
         var dixy = Datamap()
@@ -65,8 +65,8 @@ public class Source {
 }
 
 public class WebPage {
-    public var name  = ""
-    public var uri   = ""
+    public var name  : String?
+    public var uri   : String?
     
     public func toDixy() -> Datamap {
         var dixy = Datamap()

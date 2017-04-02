@@ -9,32 +9,32 @@
 import Foundation
 
 public class Resource {
-    public var path        = "" // {DataPackage}/data/
-    public var profile     = "default"
-    public var name        = ""            // Required
-    public var title       = ""
-    public var descript    = ""
-    public var format      = ""
-    public var mediatype   = ""
-    public var encoding    = "utf-8"
-    public var bytes       = 0
-    public var hash        = ""
+    public var name        = ""      // Required
+    public var path        : String? // {DataPackage}/data/
+    public var profile     : String? // "default"
+    public var title       : String?
+    public var descript    : String?
+    public var format      : String?
+    public var mediatype   : String?
+    public var encoding    : String? // "utf-8"
+    public var bytes       : Int?
+    public var hash        : String?
     public var data        = [String]()    // Required
-    public var schema      = Schema()
-    public var homepage    = WebPage()
-    public var licenses    = [License]()
-    public var sources     = [Source]()
+    public var schema      : Schema?
+    public var homepage    : WebPage?
+    public var licenses    : [License]?
+    public var sources     : [Source]?
 
     public func load(map: Datamap) {
-        profile      = map["profile"]     as? String ?? "default"
-        name         = map["name"]        as? String ?? ""
-        title        = map["title"]       as? String ?? ""
-        descript     = map["description"] as? String ?? ""
-        format       = map["format"]      as? String ?? ""
-        mediatype    = map["mediatype"]   as? String ?? ""
-        encoding     = map["encoding"]    as? String ?? "utf-8"
-        hash         = map["hash"]        as? String ?? ""
-        bytes        = map["bytes"]       as? Int    ?? 0
+        profile      = map["profile"]     as? String
+        name         = map["name"]        as? String ?? "Unknown"
+        title        = map["title"]       as? String
+        descript     = map["description"] as? String
+        format       = map["format"]      as? String
+        mediatype    = map["mediatype"]   as? String
+        encoding     = map["encoding"]    as? String
+        hash         = map["hash"]        as? String
+        bytes        = map["bytes"]       as? Int
         
         // Complex elements
         
@@ -45,35 +45,39 @@ public class Resource {
 
         // Homepage
         if let page = map["homepage"] as? Datamap {
-            homepage.name = page["name"]  as? String ?? ""
-            homepage.uri  = page["uri"]   as? String ?? ""
+            homepage = WebPage()
+            homepage!.name = page["name"]  as? String
+            homepage!.uri  = page["uri"]   as? String
         }
         
         // Licenses
         if let list2 = map["licenses"] as? [Datamap] {
+            licenses = [License]()
             for item in list2 {
                 let obj   = License()
-                obj.name  = item["name"]  as? String ?? ""
-                obj.title = item["title"] as? String ?? ""
-                obj.uri   = item["uri"]   as? String ?? ""
-                licenses.append(obj)
+                obj.name  = item["name"]  as? String ?? "Unknown"
+                obj.title = item["title"] as? String
+                obj.uri   = item["uri"]   as? String
+                licenses!.append(obj)
             }
         }
         
         // Sources
         if let list3 = map["sources"] as? [Datamap] {
+            sources = [Source]()
             for item in list3 {
                 let obj   = Source()
-                obj.name  = item["name"]  as? String ?? ""
-                obj.uri   = item["uri"]   as? String ?? ""
-                obj.email = item["email"] as? String ?? ""
-                sources.append(obj)
+                obj.name  = item["name"]  as? String
+                obj.uri   = item["uri"]   as? String ?? "Unknown"
+                obj.email = item["email"] as? String
+                sources!.append(obj)
             }
         }
 
         // Schema
         if let dixy = map["schema"] as? Datamap {
-            schema.load(map: dixy)
+            schema = Schema()
+            schema!.load(map: dixy)
         }
 
     }
@@ -94,10 +98,10 @@ public class Resource {
         dixy["bytes"]       = bytes
         dixy["hash"]        = hash
         dixy["data"]        = data
-        dixy["schema"]      = schema.toDixy()
-        dixy["homepage"]    = homepage.toDixy()
-        dixy["licenses"]    = licenses.map{ $0.toDixy() }
-        dixy["sources"]     = sources.map{ $0.toDixy() }
+        dixy["schema"]      = schema?.toDixy()
+        dixy["homepage"]    = homepage?.toDixy()
+        dixy["licenses"]    = licenses?.map{ $0.toDixy() }
+        dixy["sources"]     = sources?.map{ $0.toDixy() }
 
         return dixy
     }
@@ -105,7 +109,7 @@ public class Resource {
     public func data(name: String) -> Dataset {
         for item in self.data {
             if item == name {
-                let path = self.path + "/" + name
+                let path = (self.path ?? ".") + "/" + name
                 let data = CSV.load(path)
                 return data
             }

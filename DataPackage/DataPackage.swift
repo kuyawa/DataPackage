@@ -25,7 +25,7 @@ public class DataPackage {
         get { return descriptor.name }
     }
     
-    public var resources: [Resource] {
+    public var resources: [Resource]? {
         get { return descriptor.resources }
     }
 
@@ -43,11 +43,14 @@ public class DataPackage {
     }
     
     public func getResource(_ name: String) -> Resource? {
-        for item in descriptor.resources {
-            if item.name == name {
-                return item
+        if let resources = descriptor.resources {
+            for item in resources {
+                if item.name == name {
+                    return item
+                }
             }
         }
+        
         return nil
     }
     

@@ -1,10 +1,10 @@
 TODO:
 
-? Constraints as enum
-- Optionals
 - Linux compatibility
+? Constraints as enum
 
 DONE:
 
+x Optionals
 x Parser iterator
 x Package Manifest
